@@ -21,7 +21,8 @@ function IncidentManagement() {
   const fetchIncidents = async (page, size) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8080/api/incidents?page=${page}&size=${size}`);
+      console.log(process.env.REACT_APP_API_BASE_URL); 
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/incidents?page=${page}&size=${size}`);
       const { content, totalElements, totalPages, currentPage } = response.data;
       setIncidents(content);
       setTotalElements(totalElements);
@@ -58,7 +59,7 @@ function IncidentManagement() {
     if (isEditing) {
       // 修改 Incident
       axios
-        .put(`http://localhost:8080/api/incidents/${currentIncident.id}`, currentIncident)
+        .put(`${process.env.REACT_APP_API_BASE_URL}/incidents/${currentIncident.id}`, currentIncident)
         .then((response) => {
           setIncidents(
             incidents.map((incident) =>
@@ -73,7 +74,7 @@ function IncidentManagement() {
     } else {
       // 新增 Incident
       axios
-        .post('http://localhost:8080/api/incidents', currentIncident)
+        .post('${process.env.REACT_APP_API_BASE_URL}/incidents', currentIncident)
         .then((response) => {
           // 新增后跳转到最后一页
           fetchLastPage();
@@ -89,7 +90,7 @@ function IncidentManagement() {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this incident?")) {
       axios
-        .delete(`http://localhost:8080/api/incidents/${id}`)
+        .delete(`${process.env.REACT_APP_API_BASE_URL}/incidents/${id}`)
         .then(() => {
           fetchIncidents(page, size); // 删除后刷新当前页的数据
         })
@@ -102,7 +103,7 @@ function IncidentManagement() {
   // 获取最后一页的函数
   const fetchLastPage = () => {
     axios
-      .get(`http://localhost:8080/api/incidents?page=${totalPages - 1}&size=${size}`)
+      .get(`${process.env.REACT_APP_API_BASE_URL}/incidents?page=${totalPages - 1}&size=${size}`)
       .then((response) => {
         const { content, totalElements, totalPages } = response.data;
         setIncidents(content);

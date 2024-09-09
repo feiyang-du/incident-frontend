@@ -74,7 +74,7 @@ function IncidentManagement() {
     } else {
       // 新增 Incident
       axios
-        .post('${process.env.REACT_APP_API_BASE_URL}/incidents', currentIncident)
+        .post(`${process.env.REACT_APP_API_BASE_URL}/incidents`, currentIncident)
         .then((response) => {
           // 新增后跳转到最后一页
           fetchLastPage();
